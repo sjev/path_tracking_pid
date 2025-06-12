@@ -764,11 +764,11 @@ auto error_integral_ang = controller_state_.error_integral_ang.filter(error_lat_
 auto error_integral_ang = controller_state_.error_integral_ang.filter(error_ang_filtered, dt.toSec());
 ```
 
-**Bug #2 - Syntax Error: Invalid Tracking Error Assignment (`controller.cpp:395-396`)**
-Invalid syntax with stray comma and unused `dt.toSec()`:
+**Bug #2 - Logic Error: Comma Operator Misuse (`controller.cpp:395-396`)**
+Unintended comma operator usage with discarded expression:
 
 ```cpp
-// WRONG (syntax error):
+// WRONG (comma operator misuse):
 controller_state_.tracking_error_ang = angles::normalize_angle(tf2::getYaw(error.getRotation())),
 dt.toSec();
 
@@ -776,7 +776,7 @@ dt.toSec();
 controller_state_.tracking_error_ang = angles::normalize_angle(tf2::getYaw(error.getRotation()));
 ```
 
-These bugs can affect controller stability and prevent compilation.
+These bugs can affect controller stability. While the comma operator usage is technically valid C++, the `dt.toSec()` expression is evaluated but discarded, indicating incomplete refactoring or copy-paste error.
 
 ### State Management
 

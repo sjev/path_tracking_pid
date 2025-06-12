@@ -19,9 +19,9 @@ auto error_integral_ang = controller_state_.error_integral_ang.filter(error_ang_
 
 **Impact**: Angular integral accumulates lateral error instead of angular error, potentially causing controller instability.
 
-#### Bug #2: Syntax Error (Critical)
+#### Bug #2: Logic Error with Comma Operator (Critical)
 ```cpp
-// WRONG (controller.cpp:395-396): Invalid syntax
+// WRONG (controller.cpp:395-396): Unintended comma operator usage
 controller_state_.tracking_error_ang = angles::normalize_angle(tf2::getYaw(error.getRotation())),
 dt.toSec();
 
@@ -29,7 +29,7 @@ dt.toSec();
 controller_state_.tracking_error_ang = angles::normalize_angle(tf2::getYaw(error.getRotation()));
 ```
 
-**Impact**: Prevents compilation, indicates poor code review processes.
+**Impact**: While technically valid C++ (comma operator), the `dt.toSec()` expression is evaluated but discarded, indicating copy-paste error or incomplete refactoring. This suggests poor code review processes.
 
 ### **Root Cause Analysis**
 These aren't edge cases but core PID implementation bugs that suggest:
@@ -37,6 +37,7 @@ These aren't edge cases but core PID implementation bugs that suggest:
 - Insufficient testing coverage
 - Possible lack of real-world validation
 - Poor quality assurance practices
+- Incomplete refactoring or copy-paste errors
 
 ## Questionable Design Decisions
 
