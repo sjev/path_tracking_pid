@@ -1,0 +1,21 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install minimal ROS dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy just the source files
+COPY src/ /app/src/
+COPY include/ /app/include/
+
+WORKDIR /app
+
+# Try to compile just the controller.cpp to see the error
+RUN g++ -c -I/app/include src/controller.cpp -o controller.o || echo "Compilation failed as expected"
+
+CMD ["/bin/bash"]
