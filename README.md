@@ -4,6 +4,8 @@
 
 Path Tracking PID offers a tuneable PID control loop decouling steerting and forward velocity. The forward velocity is generated in an open loop fashion by using target velocities and accelerations.
 
+📖 **For detailed technical documentation of the controller design, see [Controller Design Documentation](doc/controller_design.md)**
+
 One of the tracking options uses a carrot of length l in front of the robot to determine the steering action based on the lateral error between the current Global Point (GP)  and the Control point (CP):
 
 ![Tracking carrot](doc/figures/tracking.png)
